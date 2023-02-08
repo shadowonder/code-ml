@@ -9,6 +9,8 @@ from sklearn.preprocessing import StandardScaler
 def logistic_regression():
     """
     逻辑分类二分类进行癌症预测, 根据细胞特征
+
+    logistic 回归又叫对数几率回归，适合数值型的二值型输出的拟合，它其实是一个分类模型，比如根据患者的医疗数据判断它是否能被治愈。
     :return:
     """
     # 读取数据
@@ -45,7 +47,7 @@ def logistic_regression():
     x_test = std.fit_transform(x_test)
 
     # 逻辑回归
-    logr = LogisticRegression()  # 默认 penalty="l2",C=1.0,
+    logr = LogisticRegression()  # 默认 penalty="l2",C=1.0 训练强度,
     logr.fit(x_train, y_train)
 
     print(logr.coef_)

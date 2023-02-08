@@ -29,7 +29,7 @@ object LogisticRegression4 {
     /**
      * 如果在训练模型的时候没有调用clearThreshold这个方法，那么这个模型预测出来的结果都是分类号
      * 如果在训练模型的时候调用clearThreshold这个方法，那么这个模型预测出来的结果是一个概率
-//     */
+     */
     val model = lr.run(trainingData).clearThreshold()
     val errorRate = testData.map{p=>
       //score就是一个概率值

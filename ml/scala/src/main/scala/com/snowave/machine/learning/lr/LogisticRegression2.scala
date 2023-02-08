@@ -7,8 +7,8 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
-  * 有无截距
-  */
+ * 有无截距
+ */
 object LogisticRegression2 {
 
   def main(args: Array[String]) {
@@ -19,16 +19,16 @@ object LogisticRegression2 {
      * randomSplit(Array(0.7, 0.3))方法就是将一个RDD拆分成N个RDD，N = Array.length
      * 第一个RDD中的数据量和数组中的第一个元素值相关
      */
-    val splits :Array[RDD[LabeledPoint]] = inputData.randomSplit(Array(0.7, 0.3),11L)
+    val splits: Array[RDD[LabeledPoint]] = inputData.randomSplit(Array(0.7, 0.3), 11L)
     val (trainingData, testData) = (splits(0), splits(1))
-    val lr = new LogisticRegressionWithSGD
+    val lr = new LogisticRegressionWithSGD // 读取逻辑回归的模型
     // 设置要有W0，也就是有截距
-    lr.setIntercept(true)
-    val model=lr.run(trainingData)
-    val result=testData.map{
-      labeledpoint=>Math.abs(labeledpoint.label-model.predict(labeledpoint.features))
+    lr.setIntercept(true) // 设置为有截距
+    val model = lr.run(trainingData)
+    val result = testData.map {
+      labeledpoint => Math.abs(labeledpoint.label - model.predict(labeledpoint.features))
     }
-    println("正确率="+(1.0-result.mean()))
+    println("正确率=" + (1.0 - result.mean()))
     println(model.weights.toArray.mkString(" "))
     println(s"intercept = ${model.intercept}")
   }

@@ -20,35 +20,34 @@ object LogisticRegression6 {
      * withStd:代表的是方差归一化
      * withMean:代表的是均值归一化
      * scalerModel：存放每一列的方差值
-     * 
+     *
      * withMean默认为false, withStd默认为true
      * 当withMean=true，withStd=false时，向量中的各元素均减去它相应的均值。
      * 当withMean=true，withStd=true时，各元素在减去相应的均值之后，还要除以它们相应的标准差。 
-     * 
+     *
      */
-    val inputData :RDD[LabeledPoint] = MLUtils.loadLibSVMFile(sc, "环境分类数据.txt")
-    
+    val inputData: RDD[LabeledPoint] = MLUtils.loadLibSVMFile(sc, "环境分类数据.txt")
+
     val vectors = inputData.map(_.features)
-    val scalerModel = new StandardScaler(withMean=true, withStd=true).fit(vectors)
-    
-    val normalizeInputData :RDD[LabeledPoint]= inputData.map{point =>
+    val scalerModel = new StandardScaler(withMean = true, withStd = true).fit(vectors) // 归一化模型
+
+    val normalizeInputData: RDD[LabeledPoint] = inputData.map { point =>
       val label = point.label
       //对每一条数据进行了归一化
       val features = scalerModel.transform(point.features.toDense)
       println(s"features : $features")
-      new LabeledPoint(label,features)
+      new LabeledPoint(label, features)
     }
 
-    
-    val splits = normalizeInputData.randomSplit(Array(0.7, 0.3),100)
+    val splits = normalizeInputData.randomSplit(Array(0.7, 0.3), 100)
     val (trainingData, testData) = (splits(0), splits(1))
-    val lr=new LogisticRegressionWithLBFGS()
+    val lr = new LogisticRegressionWithLBFGS()
     lr.setNumClasses(2)
-//    val lr = new LogisticRegressionWithSGD()
+    //    val lr = new LogisticRegressionWithSGD()
     lr.setIntercept(true)
     val model = lr.run(trainingData)
-    val result=testData.map{point=>Math.abs(point.label-model.predict(point.features)) }
-    println("正确率="+(1.0-result.mean()))
+    val result = testData.map { point => Math.abs(point.label - model.predict(point.features)) }
+    println("正确率=" + (1.0 - result.mean()))
     println(model.weights.toArray.mkString(" "))
     println(model.intercept)
   }
