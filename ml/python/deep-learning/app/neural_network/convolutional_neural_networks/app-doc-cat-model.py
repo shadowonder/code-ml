@@ -112,7 +112,7 @@ history = model.fit_generator(
     epochs=20,
     validation_data=validation_generator,
     validation_steps=50,  # 1000 images = batch_size * steps
-    verbose=2)
+    verbose=2) # verbose: 0, 1 或 2。日志显示模式。 0 = 安静模式, 1 = 进度条, 2 = 每轮一行。
 
 # 此处, 训练集的结果为0.98, 拟合程度很高, 但是测试集中, 拟合程度却很低, 只有0.84, 说明模型过拟合了
 # Epoch 201/201
