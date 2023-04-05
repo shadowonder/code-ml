@@ -3,6 +3,9 @@ data
 models
 log
 
+# pytorch cache
+.vector_cache
+
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
